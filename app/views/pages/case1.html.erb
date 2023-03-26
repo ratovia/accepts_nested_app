@@ -1,0 +1,24 @@
+<h1>ネストなaccepts_nested_attributes_forで保存する</h1>
+<p>親モデルを保存する際に子モデルの情報も保存する。その際に孫モデルも保存する</p>
+<%= form_for @company do |f| %>
+  <%= f.label "企業名" %>
+  <%= f.text_field :name %>
+
+  <%= f.fields_for :team_leader do |tl| %>
+    <%= tl.label "チームリーダー名" %>
+    <%= tl.text_field :name %>
+  <% end %>
+
+  <%= f.submit %>
+<% end %>
+
+
+<pre>
+ストロングパラメータ
+params.require(:company).permit(
+  :name,
+  team_leader_attributes: [
+    :name
+  ]
+)
+</pre>

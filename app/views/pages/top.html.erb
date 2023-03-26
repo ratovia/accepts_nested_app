@@ -1,0 +1,66 @@
+<h1>accepts_nested_attributes_forを攻略するアプリ</h1>
+<section>
+  <h2>accepts_nested_attributes_forの基本</h2>
+  <p>accepts_nested_attributes_for は、親モデルと子モデルの関係を持つ場合に、子モデルを含めた親モデルのパラメータを受け取って、子モデルを作成・更新するためのメソッドです。<br>
+  例えば、ある Company モデルが複数の TeamLeader モデルを持つ場合、Company モデルに accepts_nested_attributes_for :team_leaders を記述することで、 Company モデルを更新するフォームに addresses_attributes というパラメータを追加し、その中に子モデルのパラメータを記述することができます。</p>
+</section>
+
+<section>
+  <h2>今回扱うアプリのスキーマ</h2>
+  <pre>
+    親モデル
+    create_table "companies", force: :cascade do |t|
+      t.string "name"
+      t.datetime "created_at", null: false
+      t.datetime "updated_at", null: false
+    end
+
+    子モデル
+    create_table "team_leaders", force: :cascade do |t|
+      t.string "name"
+      t.bigint "company_id"
+      t.datetime "created_at", null: false
+      t.datetime "updated_at", null: false
+    end
+
+    孫モデル
+    create_table "engineers", force: :cascade do |t|
+      t.string "name"
+      t.bigint "team_leader_id"
+      t.datetime "created_at", null: false
+      t.datetime "updated_at", null: false
+    end
+
+    他モデル
+    create_table "projects", force: :cascade do |t|
+      t.string "name"
+      t.bigint "company_id"
+      t.datetime "created_at", null: false
+      t.datetime "updated_at", null: false
+    end
+
+    子モデル - 他モデル
+    create_table "engineer_project_relations", force: :cascade do |t|
+      t.bigint "engineer_id"
+      t.bigint "project_id"
+      t.datetime "created_at", null: false
+      t.datetime "updated_at", null: false
+    end
+  </pre>
+</section>
+
+<section>
+  <h2>シンプルなaccepts_nested_attributes_forで保存する</h2>
+  <%= link_to "フォーム画面へ", :pages_case1 %>
+</section>
+
+<section>
+  <h2>ネストなaccepts_nested_attributes_forで保存する</h2>
+  <%= link_to "フォーム画面へ", :pages_case2 %>
+</section>
+
+
+<section>
+  <h2>中間テーブルをaccepts_nested_attributes_forで保存する</h2>
+  <%= link_to "フォーム画面へ", :pages_case3 %>
+</section>

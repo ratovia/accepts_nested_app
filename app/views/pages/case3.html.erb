@@ -1,0 +1,25 @@
+<h1>中間テーブルをaccepts_nested_attributes_forで保存する</h1>
+<p>孫モデルを保存する際に他モデルとの紐付け情報を保存する。</p>
+
+<%= form_for @engineer do |f| %>
+  <%= f.label "エンジニア名" %>
+  <%= f.text_field :name %>
+
+  <%= f.fields_for :engineer_project_relations do |epr| %>
+    project_id: <%= @project.id %>と紐付けます
+    <% epr.hidden_field :project_id, value: @project.id %>
+  <% end %>
+
+  <%= f.submit %>
+<% end %>
+
+
+<pre>
+params.require(:engineer).permit(
+  :name,
+  engineer_project_relations_attributes: [
+    :id,
+    :project_id
+  ]
+)
+</pre>
